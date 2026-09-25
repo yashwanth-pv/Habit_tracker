@@ -3,12 +3,12 @@
     "name": "Yashwanth",
     "title": "Awakened",
     "level": 1,
-    "xp": 40,
+    "xp": 60,
     "stat_points": 0,
     "stats": {
       "STR": 11,
       "VIT": 11,
-      "AGI": 10,
+      "AGI": 11,
       "INT": 10,
       "PER": 10
     },
@@ -48,8 +48,8 @@
         "AGI": 1
       },
       "category": "daily",
-      "streak": 0,
-      "last_completed": null
+      "streak": 1,
+      "last_completed": "2026-09-25"
     },
     {
       "id": "2df41141",
@@ -90,6 +90,14 @@
     }
   ],
   "log": [
+    {
+      "date": "2026-09-25T16:28:48",
+      "text": "+1 Agility"
+    },
+    {
+      "date": "2026-09-25T16:28:48",
+      "text": "+20 XP from 'Squats'"
+    },
     {
       "date": "2026-09-25T16:28:47",
       "text": "+1 Vitality"
