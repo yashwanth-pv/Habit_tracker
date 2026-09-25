@@ -4,11 +4,11 @@
     "title": "Awakened",
     "level": 2,
     "xp": 20,
-    "stat_points": 1,
+    "stat_points": 0,
     "stats": {
       "STR": 12,
       "VIT": 12,
-      "AGI": 12,
+      "AGI": 13,
       "INT": 12,
       "PER": 11
     },
@@ -91,6 +91,10 @@
     }
   ],
   "log": [
+    {
+      "date": "2026-09-25T16:29:38",
+      "text": "+1 Agility (manual allocation)"
+    },
     {
       "date": "2026-09-25T16:29:33",
       "text": "+1 Intelligence (manual allocation)"
