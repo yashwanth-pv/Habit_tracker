@@ -4,9 +4,9 @@
     "title": "Awakened",
     "level": 2,
     "xp": 20,
-    "stat_points": 3,
+    "stat_points": 2,
     "stats": {
-      "STR": 11,
+      "STR": 12,
       "VIT": 12,
       "AGI": 12,
       "INT": 11,
@@ -91,6 +91,10 @@
     }
   ],
   "log": [
+    {
+      "date": "2026-09-25T16:29:20",
+      "text": "+1 Strength (manual allocation)"
+    },
     {
       "date": "2026-09-25T16:28:50",
       "text": "+1 Perception"
