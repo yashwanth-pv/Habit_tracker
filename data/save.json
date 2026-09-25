@@ -3,10 +3,10 @@
     "name": "Yashwanth",
     "title": "Awakened",
     "level": 1,
-    "xp": 0,
+    "xp": 20,
     "stat_points": 0,
     "stats": {
-      "STR": 10,
+      "STR": 11,
       "VIT": 10,
       "AGI": 10,
       "INT": 10,
@@ -24,8 +24,8 @@
         "STR": 1
       },
       "category": "daily",
-      "streak": 0,
-      "last_completed": null
+      "streak": 1,
+      "last_completed": "2026-09-25"
     },
     {
       "id": "bf435a23",
@@ -89,6 +89,15 @@
       "last_completed": null
     }
   ],
-  "log": [],
+  "log": [
+    {
+      "date": "2026-09-25T16:28:31",
+      "text": "+1 Strength"
+    },
+    {
+      "date": "2026-09-25T16:28:31",
+      "text": "+20 XP from 'Push-Ups'"
+    }
+  ],
   "last_seen": "2026-09-25"
 }
