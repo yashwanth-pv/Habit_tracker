@@ -3,14 +3,14 @@
     "name": "Yashwanth",
     "title": "Awakened",
     "level": 2,
-    "xp": 5,
+    "xp": 20,
     "stat_points": 3,
     "stats": {
       "STR": 11,
       "VIT": 12,
       "AGI": 12,
       "INT": 11,
-      "PER": 10
+      "PER": 11
     },
     "created": "2026-09-25",
     "_last_rank": "E"
@@ -86,11 +86,19 @@
         "PER": 1
       },
       "category": "daily",
-      "streak": 0,
-      "last_completed": null
+      "streak": 1,
+      "last_completed": "2026-09-25"
     }
   ],
   "log": [
+    {
+      "date": "2026-09-25T16:28:50",
+      "text": "+1 Perception"
+    },
+    {
+      "date": "2026-09-25T16:28:50",
+      "text": "+15 XP from 'Focus Block'"
+    },
     {
       "date": "2026-09-25T16:28:49",
       "text": "Rank up available: E-Rank"
