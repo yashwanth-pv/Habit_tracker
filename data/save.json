@@ -2,17 +2,18 @@
   "player": {
     "name": "Yashwanth",
     "title": "Awakened",
-    "level": 1,
-    "xp": 60,
-    "stat_points": 0,
+    "level": 2,
+    "xp": 5,
+    "stat_points": 3,
     "stats": {
       "STR": 11,
-      "VIT": 11,
-      "AGI": 11,
-      "INT": 10,
+      "VIT": 12,
+      "AGI": 12,
+      "INT": 11,
       "PER": 10
     },
-    "created": "2026-09-25"
+    "created": "2026-09-25",
+    "_last_rank": "E"
   },
   "quests": [
     {
@@ -61,8 +62,8 @@
         "AGI": 1
       },
       "category": "daily",
-      "streak": 0,
-      "last_completed": null
+      "streak": 1,
+      "last_completed": "2026-09-25"
     },
     {
       "id": "e7f3d424",
@@ -73,8 +74,8 @@
         "INT": 1
       },
       "category": "daily",
-      "streak": 0,
-      "last_completed": null
+      "streak": 1,
+      "last_completed": "2026-09-25"
     },
     {
       "id": "1c3849bb",
@@ -90,6 +91,34 @@
     }
   ],
   "log": [
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "Rank up available: E-Rank"
+    },
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "LEVEL UP! You are now Level 2."
+    },
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "+1 Intelligence"
+    },
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "+15 XP from 'Read / Study'"
+    },
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "+1 Agility"
+    },
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "+1 Vitality"
+    },
+    {
+      "date": "2026-09-25T16:28:49",
+      "text": "+30 XP from 'Run'"
+    },
     {
       "date": "2026-09-25T16:28:48",
       "text": "+1 Agility"
