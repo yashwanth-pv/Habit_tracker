@@ -1,0 +1,94 @@
+{
+  "player": {
+    "name": "Player",
+    "title": "Awakened",
+    "level": 1,
+    "xp": 0,
+    "stat_points": 0,
+    "stats": {
+      "STR": 10,
+      "VIT": 10,
+      "AGI": 10,
+      "INT": 10,
+      "PER": 10
+    },
+    "created": "2026-09-25"
+  },
+  "quests": [
+    {
+      "id": "01a26134",
+      "name": "Push-Ups",
+      "description": "Complete 100 push-ups.",
+      "xp": 20,
+      "stat_rewards": {
+        "STR": 1
+      },
+      "category": "daily",
+      "streak": 0,
+      "last_completed": null
+    },
+    {
+      "id": "bf435a23",
+      "name": "Sit-Ups",
+      "description": "Complete 100 sit-ups.",
+      "xp": 20,
+      "stat_rewards": {
+        "VIT": 1
+      },
+      "category": "daily",
+      "streak": 0,
+      "last_completed": null
+    },
+    {
+      "id": "2a5bcc53",
+      "name": "Squats",
+      "description": "Complete 100 squats.",
+      "xp": 20,
+      "stat_rewards": {
+        "AGI": 1
+      },
+      "category": "daily",
+      "streak": 0,
+      "last_completed": null
+    },
+    {
+      "id": "2df41141",
+      "name": "Run",
+      "description": "Run 10 kilometers.",
+      "xp": 30,
+      "stat_rewards": {
+        "VIT": 1,
+        "AGI": 1
+      },
+      "category": "daily",
+      "streak": 0,
+      "last_completed": null
+    },
+    {
+      "id": "e7f3d424",
+      "name": "Read / Study",
+      "description": "Spend 30 minutes learning something new.",
+      "xp": 15,
+      "stat_rewards": {
+        "INT": 1
+      },
+      "category": "daily",
+      "streak": 0,
+      "last_completed": null
+    },
+    {
+      "id": "1c3849bb",
+      "name": "Focus Block",
+      "description": "One distraction-free 25-minute deep work session.",
+      "xp": 15,
+      "stat_rewards": {
+        "PER": 1
+      },
+      "category": "daily",
+      "streak": 0,
+      "last_completed": null
+    }
+  ],
+  "log": [],
+  "last_seen": "2026-09-25"
+}
