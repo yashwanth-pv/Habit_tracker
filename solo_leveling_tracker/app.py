@@ -110,6 +110,13 @@ def hearts_bar(hp, hp_max, n=10):
     return "❤️" * filled + "🖤" * (n - filled)
 
 
+def square_bar(value, max_value, n=10):
+    """Segmented block meter like the reference screenshot's skill bars."""
+    filled = round((value / max_value) * n) if max_value else 0
+    filled = max(0, min(n, filled))
+    return "▰" * filled + "▱" * (n - filled)
+
+
 def build_radar(data):
     cats = SKILLS + [SKILLS[0]]
     vals = [data["skills"][s]["level"] for s in SKILLS]
@@ -173,14 +180,63 @@ def build_calendar_heatmap(data, weeks_back=6):
 # --------------------------------------------------------------------------
 st.markdown(f"""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600&display=swap');
+
 .stApp {{ background-color: {DARK_BG}; }}
+section[data-testid="stSidebar"] {{ background-color: {CARD_BG}; }}
+
 div[data-testid="stVerticalBlockBorderWrapper"] {{
     background-color: {CARD_BG};
     border-radius: 14px;
     border: 1px solid #232a3a;
+    box-shadow: 0 0 18px rgba(95,211,224,0.06);
+    padding: 4px 4px 10px 4px;
 }}
-h1, h2, h3 {{ color: #f2f4f8; }}
+
+.system-title {{
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    text-align: center;
+    font-size: 3rem;
+    letter-spacing: 4px;
+    color: #f2f4f8;
+    text-shadow: 0 0 18px rgba(95,211,224,0.35);
+    margin-bottom: 0;
+}}
+.system-subtitle {{
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    letter-spacing: 6px;
+    color: {ACCENT};
+    font-size: 1.1rem;
+    margin-top: 0;
+}}
+.system-logo {{
+    text-align: center;
+    color: #8b93a7;
+    letter-spacing: 3px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}}
+
+h1, h2, h3, .stMarkdown h3 {{ color: #f2f4f8; font-family: 'Inter', sans-serif; }}
 .small-muted {{ color: #8b93a7; font-size: 0.85rem; }}
+
+.avatar-frame {{
+    text-align: center;
+    font-size: 90px;
+    padding: 10px;
+    border-radius: 12px;
+    background: radial-gradient(circle, rgba(95,211,224,0.18) 0%, rgba(11,14,23,0) 70%);
+}}
+
+.skill-row {{ font-family: 'Inter', monospace; letter-spacing: 1px; }}
+.skill-bar {{ color: {ACCENT}; letter-spacing: 2px; }}
+
+.activity-line {{ font-family: 'Inter', sans-serif; color: #8b93a7; font-size: 0.85rem; margin-bottom: -4px; }}
+.activity-note {{ color: #e5e8ef; font-size: 0.95rem; margin-bottom: 0; }}
+.activity-delta-pos {{ color: #4ade80; font-weight: 600; }}
+.activity-delta-neg {{ color: #f87171; font-weight: 600; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -208,11 +264,23 @@ with st.sidebar:
     repo = st.text_input("Repo name", value=secrets_repo, placeholder="habit-tracker-data")
     branch = st.text_input("Branch", value="main")
     path = st.text_input("Data file path", value=DEFAULT_DATA_PATH)
-    token = st.text_input(
-        "GitHub token", value=secrets_token, type="password",
-        help="A fine-grained PAT with Contents read/write on this repo. "
-             "Better: put it in .streamlit/secrets.toml as GITHUB_TOKEN so it never appears here.",
-    )
+
+    if secrets_token:
+        # Token comes from .streamlit/secrets.toml — never rendered into any widget.
+        st.caption("🔒 GitHub token loaded from secrets.toml")
+        token = secrets_token
+    else:
+        # No secrets.toml found — let the user paste one for this session only.
+        # type="password" masks it on screen; it is kept only in memory and is
+        # never written back into the widget's displayed value.
+        token_input = st.text_input(
+            "GitHub token", value="", type="password",
+            placeholder="paste token for this session",
+            help="A fine-grained PAT with Contents read/write on this repo. "
+                 "For a token that's never typed here at all, put it in "
+                 ".streamlit/secrets.toml as GITHUB_TOKEN instead.",
+        )
+        token = token_input
 
     col_a, col_b = st.columns(2)
     with col_a:
@@ -270,8 +338,9 @@ with st.sidebar:
 # --------------------------------------------------------------------------
 # Header
 # --------------------------------------------------------------------------
-st.markdown("<h1 style='text-align:center;'>SOLO LEVELING</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align:center;color:#8b93a7;'>REAL-LIFE SYSTEM</h3>", unsafe_allow_html=True)
+st.markdown("<div class='system-logo'>⧉ Life RPG</div>", unsafe_allow_html=True)
+st.markdown("<p class='system-title'>SOLO LEVELING</p>", unsafe_allow_html=True)
+st.markdown("<p class='system-subtitle'>REAL-LIFE SYSTEM</p>", unsafe_allow_html=True)
 st.write("")
 
 data = st.session_state.data
@@ -283,20 +352,27 @@ player = data["player"]
 c1, c2, c3 = st.columns(3)
 
 with c1.container(border=True):
-    st.subheader("1. Avatar")
+    st.subheader("1. Create Avatar")
     if player.get("avatar_b64"):
         st.image(base64.b64decode(player["avatar_b64"]), use_container_width=True)
     else:
-        st.markdown("<div style='text-align:center;font-size:80px;'>🧑‍💼</div>", unsafe_allow_html=True)
-    st.markdown(f"**{player['name']}** · Level {player['level']} · {player['coins']} Coins")
-    st.markdown(f"HP: {hearts_bar(player['hp'], player['hp_max'])}  {player['hp']} / {player['hp_max']}")
+        st.markdown("<div class='avatar-frame'>🧑‍💼</div>", unsafe_allow_html=True)
+    st.markdown(
+        f"<span class='small-muted'>{player['name']} · Level {player['level']} · {player['coins']} Coins</span>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"<span class='skill-bar'>{hearts_bar(player['hp'], player['hp_max'])}</span> "
+        f"<span class='small-muted'>{player['hp']} / {player['hp_max']}</span>",
+        unsafe_allow_html=True,
+    )
 
 with c2.container(border=True):
-    st.subheader("2. Your Stats")
+    st.subheader("2. See your Stats")
     st.plotly_chart(build_radar(data), use_container_width=True, config={"displayModeBar": False})
 
 with c3.container(border=True):
-    st.subheader("3. Your Progress")
+    st.subheader("3. Track your Progress")
     st.plotly_chart(build_calendar_heatmap(data), use_container_width=True, config={"displayModeBar": False})
 
 st.write("")
@@ -307,26 +383,43 @@ st.write("")
 d1, d2 = st.columns(2)
 
 with d1.container(border=True):
-    st.subheader("4. Skill Points")
+    st.subheader("4. Select Skill to Level Up")
     for s in SKILLS:
         sk = data["skills"][s]
-        pct = sk["xp"] / XP_PER_LEVEL
-        st.markdown(f"**{s}** — LV {sk['level']}")
-        st.progress(min(1.0, pct), text=f"{sk['xp']} / {XP_PER_LEVEL} XP")
+        bar = square_bar(sk["xp"], XP_PER_LEVEL)
+        st.markdown(
+            f"<div class='skill-row'>{s}<br>"
+            f"<span class='skill-bar'>{bar}</span> "
+            f"<span class='small-muted'>{sk['xp']} / {XP_PER_LEVEL} &nbsp;·&nbsp; LV {sk['level']}</span>"
+            f"</div><br>",
+            unsafe_allow_html=True,
+        )
 
 with d2.container(border=True):
-    st.subheader("5. Activities")
+    st.subheader("5. Gain XP and Level Up")
     if not data["activities"]:
         st.caption("Nothing logged yet — add one from the sidebar.")
     for a in data["activities"][:15]:
         ts = datetime.fromisoformat(a["ts"])
-        when = ts.strftime("%b %d, %I:%M %p")
+        today = datetime.now().date()
+        day_label = "Today" if ts.date() == today else (
+            "Yesterday" if ts.date() == today - timedelta(days=1) else ts.strftime("%b %d")
+        )
+        when = f"@{day_label} {ts.strftime('%I:%M %p').lstrip('0')}"
+
         if a["kind"] == "xp_gain":
-            st.markdown(f"🟢 **{when}** — {a['note']} → +{a['amount']} XP ({a['skill']})")
+            verb, delta, cls = "You have gained", f"+ {a['amount']} EXP!", "activity-delta-pos"
         elif a["kind"] == "hp_loss":
-            st.markdown(f"🔴 **{when}** — {a['note']} → -{a['amount']} HP")
+            verb, delta, cls = "You lost a battle and lost", f"- {a['amount']} HP!", "activity-delta-neg"
         else:
-            st.markdown(f"💚 **{when}** — {a['note']} → +{a['amount']} HP")
+            verb, delta, cls = "You restored", f"+ {a['amount']} HP!", "activity-delta-pos"
+
+        st.markdown(
+            f"<div class='activity-line'>→| {when}</div>"
+            f"<div class='activity-note'>{verb} {a['amount']} {'HP' if 'HP' in delta else 'EXP'}! → {a['note']}</div>"
+            f"<div class='{cls}'>{delta}</div><br>",
+            unsafe_allow_html=True,
+        )
 
 st.divider()
 st.caption(
