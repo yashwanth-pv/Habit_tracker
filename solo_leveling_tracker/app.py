@@ -21,9 +21,23 @@ st.set_page_config(page_title="Solo Leveling — Real Life System", page_icon="�
 GITHUB_API = "https://api.github.com"
 DEFAULT_DATA_PATH = "habit_tracker_data.json"
 
-SKILLS = ["Writing", "Financial", "Learning", "Video Editing", "Health", "Creativity"]
+SKILLS = ["Workout", "Reading", "Sleep"]
 XP_PER_LEVEL = 500
 HP_MAX_DEFAULT = 1000
+
+# The specific routine you want tracked under "Workout" — shown as a
+# reference checklist so you know what counts as one logged session.
+WORKOUT_ROUTINE = {
+    "frequency": "3 times every other day",
+    "items": [
+        "12 push ups",
+        "25 crunches",
+        "20 lunges (10/leg)",
+        "25 squats",
+        "50 jumping jacks",
+        "60-second wall sit",
+    ],
+}
 
 DARK_BG = "#0b0e17"
 ACCENT = "#5fd3e0"
@@ -180,8 +194,6 @@ def build_calendar_heatmap(data, weeks_back=6):
 # --------------------------------------------------------------------------
 st.markdown(f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600&display=swap');
-
 .stApp {{ background-color: {DARK_BG}; }}
 section[data-testid="stSidebar"] {{ background-color: {CARD_BG}; }}
 
@@ -189,51 +201,38 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
     background-color: {CARD_BG};
     border-radius: 14px;
     border: 1px solid #232a3a;
-    box-shadow: 0 0 18px rgba(95,211,224,0.06);
-    padding: 4px 4px 10px 4px;
 }}
 
 .system-title {{
-    font-family: 'Cinzel', serif;
-    font-weight: 800;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
     text-align: center;
     font-size: 3rem;
-    letter-spacing: 4px;
     color: #f2f4f8;
-    text-shadow: 0 0 18px rgba(95,211,224,0.35);
     margin-bottom: 0;
 }}
 .system-subtitle {{
-    font-family: 'Cinzel', serif;
     text-align: center;
-    letter-spacing: 6px;
-    color: {ACCENT};
+    letter-spacing: 3px;
+    color: #e5e8ef;
     font-size: 1.1rem;
     margin-top: 0;
 }}
 .system-logo {{
     text-align: center;
     color: #8b93a7;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     font-size: 0.8rem;
     text-transform: uppercase;
 }}
 
-h1, h2, h3, .stMarkdown h3 {{ color: #f2f4f8; font-family: 'Inter', sans-serif; }}
 .small-muted {{ color: #8b93a7; font-size: 0.85rem; }}
+.avatar-frame {{ text-align: center; font-size: 90px; }}
 
-.avatar-frame {{
-    text-align: center;
-    font-size: 90px;
-    padding: 10px;
-    border-radius: 12px;
-    background: radial-gradient(circle, rgba(95,211,224,0.18) 0%, rgba(11,14,23,0) 70%);
-}}
-
-.skill-row {{ font-family: 'Inter', monospace; letter-spacing: 1px; }}
+.skill-row {{ letter-spacing: 1px; }}
 .skill-bar {{ color: {ACCENT}; letter-spacing: 2px; }}
 
-.activity-line {{ font-family: 'Inter', sans-serif; color: #8b93a7; font-size: 0.85rem; margin-bottom: -4px; }}
+.activity-line {{ color: #8b93a7; font-size: 0.85rem; margin-bottom: -4px; }}
 .activity-note {{ color: #e5e8ef; font-size: 0.95rem; margin-bottom: 0; }}
 .activity-delta-pos {{ color: #4ade80; font-weight: 600; }}
 .activity-delta-neg {{ color: #f87171; font-weight: 600; }}
@@ -312,11 +311,15 @@ with st.sidebar:
     st.divider()
 
     st.header("➕ Log Activity")
+    with st.expander("📋 Workout routine (reference)"):
+        st.caption(WORKOUT_ROUTINE["frequency"])
+        for item in WORKOUT_ROUTINE["items"]:
+            st.markdown(f"- {item}")
     with st.form("add_activity"):
-        skill = st.selectbox("Skill", SKILLS)
+        skill = st.selectbox("Activity", SKILLS)
         kind_label = st.radio("Effect", ["Gain XP (good habit)", "Lose HP (bad habit)", "Restore HP"])
         amount = st.number_input("Amount", min_value=1, max_value=500, value=5)
-        note = st.text_input("Note", placeholder="e.g. Workout, Smoking, Read 20 pages")
+        note = st.text_input("Note", placeholder="e.g. Full workout routine, Read 20 pages, 7hrs sleep")
         submitted = st.form_submit_button("Log it", use_container_width=True)
         if submitted:
             kind = {"Gain XP (good habit)": "xp_gain",
