@@ -1,4 +1,4 @@
-# Solo Leveling — Real Life System (Streamlit)
+# Solo Leveling — Real Life System (Streamlit)[https://y-level-up.streamlit.app/]
 
 A habit tracker styled after the "Solo Leveling / Life RPG" concept:
 an avatar card, a skill radar chart, a weekly activity heatmap, skill
